@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💍 Anna & Maksym</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--gold:#C9A84C;
+--gold-light:#E8D5A3;
+--gold-dark:#8B6914;
+--cream:#FDF8F0;
+--white:#FFFFFF;
+--text:#2C2C2C;
+--text-light:#6B6B6B;
+--error:#E53E3E;
+--success:#38A169;
+}
+body{
+font-family:'Georgia',serif;
+background:var(--cream);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+.card{
+background:var(--white);
+border-radius:16px;
+padding:40px 36px;
+max-width:480px;
+width:100%;
+box-shadow:0 20px 60px rgba(0,0,0,0.12);
+border:1px solid rgba(201,168,76,0.2);
+position:relative;
+overflow:hidden;
+}
+.card::before{
+content:'';
+position:absolute;
+top:0;left:0;right:0;
+height:4px;
+background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light),var(--gold));
+}
+.header{text-align:center;margin-bottom:8px}
+.emoji-ring{
+font-size:3rem;
+display:block;
+margin-bottom:12px;
+animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+}
+.names{font-size:1.8rem;color:var(--text);font-weight:normal;letter-spacing:2px}
+.names span{color:var(--gold)}
+.date{color:var(--text-light);font-size:0.9rem;margin-top:6px;letter-spacing:3px}
+.ornament{text-align:center;color:var(--gold);font-size:1.2rem;letter-spacing:8px;margin:12px 0;opacity:0.7}
+.lang-switcher{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-bottom:16px;
+flex-wrap:wrap;
+}
+.lang-btn{
+padding:4px 10px;
+border:1px solid var(--gold-light);
+border-radius:20px;
+background:transparent;
+color:var(--text-light);
+font-size:0.75rem;
+cursor:pointer;
+font-family:sans-serif;
+transition:all 0.2s;
+}
+.lang-btn.active{
+background:var(--gold);
+color:white;
+border-color:var(--gold);
+}
+.subtitle{
+color:var(--text-light);
+font-size:0.95rem;
+text-align:center;
+line-height:1.6;
+font-family:sans-serif;
+margin-bottom:16px;
+}
+.upload-area{
+border:2px dashed var(--gold-light);
+border-radius:16px;
+padding:40px 20px;
+text-align:center;
+cursor:pointer;
+transition:all 0.3s;
+background:rgba(201,168,76,0.03);
+margin-bottom:20px;
+}
+.upload-area:hover{
+border-color:var(--gold);
+background:rgba(201,168,76,0.08);
+}
+.upload-icon{font-size:3rem;display:block;margin-bottom:12px}
+.upload-title{font-size:1.1rem;color:var(--text);margin-bottom:6px}
+.upload-hint{font-size:0.8rem;color:var(--text-light);font-family:sans-serif;line-height:1.5}
+.upload-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.btn-option{
+padding:14px 10px;
+border:1.5px solid var(--gold-light);
+border-radius:10px;
+background:var(--white);
+color:var(--text);
+cursor:pointer;
+transition:all 0.2s;
+font-family:sans-serif;
+font-size:0.9rem;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+}
+.btn-option:hover{border-color:var(--gold);background:rgba(201,168,76,0.06)}
+.btn-option .icon{font-size:1.6rem}
+.btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:10px;
+font-size:1rem;
+cursor:pointer;
+transition:all 0.25s;
+font-family:sans-serif;
+font-weight:600;
+}
+.btn-primary{
+background:linear-gradient(135deg,var(--gold-dark),var(--gold));
+color:var(--white);
+box-shadow:0 4px 20px rgba(201,168,76,0.4);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,0.5)}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.preview-container{display:none;margin-bottom:20px}
+.preview-label{font-size:0.8rem;color:var(--text-light);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;font-family:sans-serif}
+.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.preview-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--cream)}
+.preview-item img,.preview-item video{width:100%;height:100%;object-fit:cover}
+.remove-btn{
+position:absolute;top:4px;right:4px;
+width:22px;height:22px;
+background:rgba(0,0,0,0.6);
+color:white;border:none;border-radius:50%;
+cursor:pointer;font-size:0.7rem;
+display:flex;align-items:center;justify-content:center;
+}
+.progress-overlay{
+position:absolute;inset:0;
+background:rgba(0,0,0,0.5);
+display:flex;flex-direction:column;
+align-items:center;justify-content:center;
+color:white;font-size:0.75rem;font-family:sans-serif;
+}
+.success-state{display:none;text-align:center;padding:20px 0}
+.success-icon{font-size:4rem;display:block;margin-bottom:16px;animation:pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
+@keyframes pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.success-title{font-size:1.5rem;color:var(--text);margin-bottom:8px}
+.success-subtitle{color:var(--text-light);font-family:sans-serif;font-size:0.9rem;line-height:1.6;margin-bottom:24px}
+.btn-more{
+background:transparent;
+border:1.5px solid var(--gold);
+color:var(--gold-dark);
+padding:12px 24px;
+border-radius:10px;
+cursor:pointer;
+font-family:sans-serif;
+font-size:0.9rem;
+transition:all 0.2s;
+}
+.btn-more:hover{background:rgba(201,168,76,0.1)}
+.toast{
+position:fixed;bottom:30px;left:50%;
+transform:translateX(-50%) translateY(100px);
+background:var(--text);color:white;
+padding:12px 24px;border-radius:50px;
+font-family:sans-serif;font-size:0.9rem;
+transition:transform 0.3s;z-index:2000;
+white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--error)}
+.spinner{
+width:20px;height:20px;
+border:2px solid rgba(255,255,255,0.3);
+border-top-color:white;border-radius:50%;
+animation:spin 0.8s linear infinite;
+display:inline-block;margin-right:8px;vertical-align:middle;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:400px){
+.card{padding:28px 20px}
+.names{font-size:1.5rem}
+.upload-buttons{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="card">
+
+<div class="header">
+<span class="emoji-ring">💍</span>
+<h1 class="names">Anna <span>&</span> Maksym</h1>
+<p class="date">14 · VI · 2026</p>
+</div>
+
+<div class="ornament">✦ ✦ ✦</div>
+
+<!-- Перемикач мови -->
+<div class="lang-switcher">
+<button class="lang-btn active" onclick="setLang('uk')">🇺🇦 UA</button>
+<button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+<button class="lang-btn" onclick="setLang('cs')">🇨🇿 CS</button>
+<button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
+</div>
+
+<!-- Uploader -->
+<div id="uploader">
+<p class="subtitle" id="txt-subtitle">Поділіться моментами нашого свята 📸</p>
+
+<div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
+<span class="upload-icon">📷</span>
+<p class="upload-title" id="txt-drop">Натисніть або перетягніть фото</p>
+<p class="upload-hint" id="txt-hint">JPG, PNG, HEIC, MP4 · Максимум 50 МБ</p>
+</div>
+
+<div class="upload-buttons">
+<button class="btn-option" onclick="openCamera()">
+<span class="icon">📸</span>
+<span id="txt-camera">Зробити фото</span>
+</button>
+<button class="btn-option" onclick="openGallery()">
+<span class="icon">🖼️</span>
+<span id="txt-gallery">З галереї</span>
+</button>
+</div>
+
+<input type="file" id="file-input" accept="image/*,video/*" multiple style="display:none" onchange="handleFiles(this.files)">
+<input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none" onchange="handleFiles(this.files)">
+
+<div class="preview-container" id="preview-container">
+<p class="preview-label" id="txt-selected">Вибрані файли</p>
+<div class="preview-grid" id="preview-grid"></div>
+</div>
+
+<button class="btn btn-primary" id="upload-btn" onclick="uploadAll()" style="display:none" id="txt-upload-btn">
+<span id="txt-upload">Завантажити фото 💛</span>
+</button>
+</div>
+
+<!-- Success -->
+<div class="success-state" id="success-state">
+<span class="success-icon">🎉</span>
+<h2 class="success-title" id="txt-thanks">Дякуємо за фото!</h2>
+<p class="success-subtitle" id="txt-thanks-sub">Ваші спогади назавжди залишаться у нашому серці ❤️</p>
+<button class="btn-more" onclick="resetUploader()" id="txt-more">+ Додати ще фото</button>
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== МОВИ =====
+const translations = {
+uk:{
+subtitle:'Поділіться моментами нашого свята 📸',
+drop:'Натисніть або перетягніть фото',
+hint:'JPG, PNG, HEIC, MP4 · Максимум 50 МБ',
+camera:'Зробити фото',
+gallery:'З галереї',
+selected:'Вибрані файли',
+upload:'Завантажити фото 💛',
+uploading:'Завантаження...',
+thanks:'Дякуємо за фото!',
+thanksSub:'Ваші спогади назавжди залишаться у нашому серці ❤️',
+more:'+ Додати ще фото',
+errorType:'Тільки фото та відео',
+errorSize:'Файл більше 50 МБ',
+errorUpload:'Помилка завантаження. Спробуйте ще раз.',
+success:'Фото успішно завантажено! 🎉'
+},
+en:{
+subtitle:'Share moments of our special day 📸',
+drop:'Tap or drag photos here',
+hint:'JPG, PNG, HEIC, MP4 · Max 50 MB',
+camera:'Take a photo',
+gallery:'From gallery',
+selected:'Selected files',
+upload:'Upload photos 💛',
+uploading:'Uploading...',
+thanks:'Thank you for the photos!',
+thanksSub:'Your memories will stay in our hearts forever ❤️',
+more:'+ Add more photos',
+errorType:'Only photos and videos allowed',
+errorSize:'File is larger than 50 MB',
+errorUpload:'Upload failed. Please try again.',
+success:'Photos uploaded successfully! 🎉'
+},
+cs:{
+subtitle:'Sdílejte momenty našeho svatebního dne 📸',
+drop:'Klepněte nebo přetáhněte fotografie',
+hint:'JPG, PNG, HEIC, MP4 · Max 50 MB',
+camera:'Vyfotit',
+gallery:'Z galerie',
+selected:'Vybrané soubory',
+upload:'Nahrát fotografie 💛',
+uploading:'Nahrávání...',
+thanks:'Děkujeme za fotografie!',
+thanksSub:'Vaše vzpomínky zůstanou navždy v našich srdcích ❤️',
+more:'+ Přidat další fotografie',
+errorType:'Pouze fotografie a videa',
+errorSize:'Soubor je větší než 50 MB',
+errorUpload:'Chyba nahrávání. Zkuste to znovu.',
+success:'Fotografie úspěšně nahrány! 🎉'
+},
+ru:{
+subtitle:'Поделитесь моментами нашего праздника 📸',
+drop:'Нажмите или перетащите фото',
+hint:'JPG, PNG, HEIC, MP4 · Максимум 50 МБ',
+camera:'Сделать фото',
+gallery:'Из галереи',
+selected:'Выбранные файлы',
+upload:'Загрузить фото 💛',
+uploading:'Загрузка...',
+thanks:'Спасибо за фото!',
+thanksSub:'Ваши воспоминания навсегда останутся в нашем сердце ❤️',
+more:'+ Добавить ещё фото',
+errorType:'Только фото и видео',
+errorSize:'Файл больше 50 МБ',
+errorUpload:'Ошибка загрузки. Попробуйте ещё раз.',
+success:'Фото успешно загружены! 🎉'
+}
+};
+
+// ===== CLOUDINARY НАЛАШТУВАННЯ =====
+const CLOUD_NAME    = 'dndou5vpl';
+const UPLOAD_PRESET = 'wedding-photos';
+const MAX_SIZE      = 50 * 1024 * 1024;
+const MAX_FILES     = 10;
+
+let currentLang = 'uk';
+let selectedFiles = [];
+
+// Авто-визначення мови
+function detectLang(){
+const lang = navigator.language || navigator.userLanguage || 'en';
+const code = lang.substring(0,2).toLowerCase();
+if(translations[code]) return code;
+return 'en';
+}
+
+function setLang(lang){
+currentLang = lang;
+const t = translations[lang];
+document.getElementById('txt-subtitle').textContent  = t.subtitle;
+document.getElementById('txt-drop').textContent      = t.drop;
+document.getElementById('txt-hint').textContent      = t.hint;
+document.getElementById('txt-camera').textContent    = t.camera;
+document.getElementById('txt-gallery').textContent   = t.gallery;
+document.getElementById('txt-selected').textContent  = t.selected;
+document.getElementById('txt-upload').textContent    = t.upload;
+document.getElementById('txt-thanks').textContent    = t.thanks;
+document.getElementById('txt-thanks-sub').textContent= t.thanksSub;
+document.getElementById('txt-more').textContent      = t.more;
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+btn.classList.remove('active');
+if(btn.textContent.includes(lang.toUpperCase())) btn.classList.add('active');
+});
+}
+
+// Ініціалізація мови
+setLang(detectLang());
+
+// ===== КАМЕРА / ГАЛЕРЕЯ =====
+function openCamera(){ document.getElementById('camera-input').click(); }
+function openGallery(){ document.getElementById('file-input').click(); }
+
+// ===== DRAG & DROP =====
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.style.borderColor='var(--gold)'});
+dropZone.addEventListener('dragleave',()=>{dropZone.style.borderColor='var(--gold-light)'});
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.style.borderColor='var(--gold-light)';handleFiles(e.dataTransfer.files)});
+
+// ===== ОБРОБКА ФАЙЛІВ =====
+function handleFiles(files){
+const t = translations[currentLang];
+Array.from(files).forEach(file=>{
+if(!file.type.startsWith('image/') && !file.type.startsWith('video/')){
+showToast(t.errorType,'error'); return;
+}
+if(file.size > MAX_SIZE){
+showToast(t.errorSize,'error'); return;
+}
+if(selectedFiles.length >= MAX_FILES) return;
+selectedFiles.push(file);
+});
+renderPreviews();
+}
+
+// ===== ПРЕВ'ЮШИ =====
+function renderPreviews(){
+const container = document.getElementById('preview-container');
+const grid      = document.getElementById('preview-grid');
+const btn       = document.getElementById('upload-btn');
+if(selectedFiles.length === 0){
+container.style.display='none';
+btn.style.display='none';
+return;
+}
+container.style.display='block';
+btn.style.display='block';
+grid.innerHTML='';
+selectedFiles.forEach((file,i)=>{
+const item = document.createElement('div');
+item.className='preview-item';
+item.id=`prev-${i}`;
+const url = URL.createObjectURL(file);
+const isVideo = file.type.startsWith('video/');
+item.innerHTML=`
+${isVideo ? `<video src="${url}" muted playsinline></video>` : `<img src="${url}" alt="">`}
+<button class="remove-btn" onclick="removeFile(${i})">✕</button>
+`;
+grid.appendChild(item);
+});
+}
+
+function removeFile(i){
+selectedFiles.splice(i,1);
+renderPreviews();
+}
+
+// ===== ЗАВАНТАЖЕННЯ =====
+async function uploadAll(){
+if(selectedFiles.length===0) return;
+const t   = translations[currentLang];
+const btn = document.getElementById('upload-btn');
+btn.disabled=true;
+btn.innerHTML=`<span class="spinner"></span>${t.uploading}`;
+
+try{
+await Promise.all(selectedFiles.map((file,i)=>uploadToCloudinary(file,i)));
+showSuccess();
+}catch(err){
+console.error(err);
+showToast(t.errorUpload,'error');
+btn.disabled=false;
+btn.innerHTML=`<span id="txt-upload">${t.upload}</span>`;
+}
+}
+
+function uploadToCloudinary(file, index){
+return new Promise((resolve,reject)=>{
+const formData = new FormData();
+formData.append('file', file);
+formData.append('upload_preset', UPLOAD_PRESET);
+formData.append('folder','wedding-2026');
+
+const xhr = new XMLHttpRequest();
+xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`);
+
+xhr.upload.onprogress = e=>{
+if(e.lengthComputable){
+const pct = Math.round((e.loaded/e.total)*100);
+updateProgress(index, pct);
+}
+};
+
+xhr.onload = ()=>{
+if(xhr.status===200) resolve(JSON.parse(xhr.responseText));
+else reject(new Error(xhr.responseText));
+};
+
+xhr.onerror = ()=>reject(new Error('Network error'));
+xhr.send(formData);
+});
+}
+
+function updateProgress(index, pct){
+const item = document.getElementById(`prev-${index}`);
+if(!item) return;
+let overlay = item.querySelector('.progress-overlay');
+if(!overlay){
+overlay = document.createElement('div');
+overlay.className='progress-overlay';
+item.appendChild(overlay);
+}
+if(pct===100){
+overlay.innerHTML='<span style="font-size:1.5rem">✓</span>';
+overlay.style.background='rgba(56,161,105,0.7)';
+}else{
+overlay.innerHTML=`<span>${pct}%</span>`;
+}
+}
+
+// ===== SUCCESS =====
+function showSuccess(){
+const t = translations[currentLang];
+document.getElementById('uploader').style.display='none';
+document.getElementById('success-state').style.display='block';
+showToast(t.success,'success');
+}
+
+function resetUploader(){
+selectedFiles=[];
+document.getElementById('success-state').style.display='none';
+document.getElementById('uploader').style.display='block';
+document.getElementById('upload-btn').style.display='none';
+document.getElementById('upload-btn').disabled=false;
+const t = translations[currentLang];
+document.getElementById('upload-btn').innerHTML=`<span id="txt-upload">${t.upload}</span>`;
+document.getElementById('preview-container').style.display='none';
+document.getElementById('preview-grid').innerHTML='';
+}
+
+// ===== TOAST =====
+function showToast(msg, type=''){
+const toast = document.getElementById('toast');
+toast.textContent=msg;
+toast.className=`toast ${type} show`;
+setTimeout(()=>toast.classList.remove('show'),3500);
+}
+</script>
+</body>
+</html>
