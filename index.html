@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💍 Anna & Maksym</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -18,8 +19,11 @@
 --success:#38A169;
 }
 body{
-font-family:'Georgia',serif;
+font-family:'Cormorant Garamond',serif;
 background:var(--cream);
+background-image:
+radial-gradient(ellipse at 20% 50%,rgba(139,157,106,0.08) 0%,transparent 60%),
+radial-gradient(ellipse at 80% 20%,rgba(139,157,106,0.06) 0%,transparent 50%);
 min-height:100vh;
 display:flex;
 align-items:center;
@@ -28,11 +32,11 @@ padding:20px;
 }
 .card{
 background:var(--white);
-border-radius:16px;
+border-radius:20px;
 padding:40px 36px;
 max-width:480px;
 width:100%;
-box-shadow:0 20px 60px rgba(0,0,0,0.12);
+box-shadow:0 20px 60px rgba(0,0,0,0.10);
 border:1px solid rgba(139,157,106,0.2);
 position:relative;
 overflow:hidden;
@@ -44,21 +48,105 @@ top:0;left:0;right:0;
 height:4px;
 background:linear-gradient(90deg,#4A6741,#8B9D6A,#E8D5A3,#C9A84C);
 }
-.header{text-align:center;margin-bottom:8px}
+.card::after{
+content:'';
+position:absolute;
+bottom:0;left:0;right:0;
+height:2px;
+background:linear-gradient(90deg,#C9A84C,#E8D5A3,#8B9D6A,#4A6741);
+}
+
+/* ===== ФОТО ПАРИ ===== */
+.couple-photo-wrap{
+display:flex;
+justify-content:center;
+margin-bottom:16px;
+cursor:pointer;
+}
+.couple-photo{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid var(--gold-light);
+box-shadow:0 4px 20px rgba(139,157,106,0.3);
+transition:transform 0.3s;
+animation:float 1.5s ease-in-out infinite;
+}
+.couple-photo:hover{transform:scale(1.05)}
 .emoji-ring{
 font-size:3rem;
 display:block;
 margin-bottom:12px;
 animation:float 1.5s ease-in-out infinite;
+cursor:pointer;
 }
 @keyframes float{
 0%,100%{transform:translateY(0)}
 50%{transform:translateY(-16px)}
 }
-.names{font-size:1.8rem;color:var(--text);font-weight:normal;letter-spacing:2px}
+
+/* ===== LIGHTBOX ===== */
+.photo-lightbox{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.85);
+z-index:3000;
+align-items:center;
+justify-content:center;
+padding:20px;
+animation:fadeIn 0.3s ease;
+}
+.photo-lightbox.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.photo-lightbox img{
+max-width:90%;
+max-height:85vh;
+border-radius:16px;
+object-fit:contain;
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.lightbox-close{
+position:absolute;
+top:20px;right:20px;
+color:white;
+font-size:2rem;
+cursor:pointer;
+background:rgba(255,255,255,0.1);
+border:none;
+width:44px;height:44px;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+transition:background 0.2s;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.2)}
+
+.header{text-align:center;margin-bottom:8px}
+.names{
+font-size:2rem;
+color:var(--text);
+font-weight:400;
+letter-spacing:3px;
+font-family:'Cormorant Garamond',serif;
+}
 .names span{color:var(--gold)}
-.date{color:var(--text-light);font-size:0.9rem;margin-top:6px;letter-spacing:3px}
-.ornament{text-align:center;color:var(--gold);font-size:1.2rem;letter-spacing:8px;margin:12px 0;opacity:0.7}
+.date{
+color:var(--text-light);
+font-size:0.85rem;
+margin-top:6px;
+letter-spacing:4px;
+font-family:'Montserrat',sans-serif;
+font-weight:300;
+}
+.ornament{
+text-align:center;
+color:var(--gold);
+font-size:1.2rem;
+letter-spacing:8px;
+margin:12px 0;
+opacity:0.7;
+}
 .lang-switcher{
 display:flex;
 justify-content:center;
@@ -72,9 +160,10 @@ border:1px solid var(--gold-light);
 border-radius:20px;
 background:transparent;
 color:var(--text-light);
-font-size:0.75rem;
+font-size:0.72rem;
 cursor:pointer;
-font-family:sans-serif;
+font-family:'Montserrat',sans-serif;
+font-weight:400;
 transition:all 0.2s;
 }
 .lang-btn.active{
@@ -84,16 +173,17 @@ border-color:var(--gold);
 }
 .subtitle{
 color:var(--text-light);
-font-size:0.95rem;
+font-size:1rem;
 text-align:center;
 line-height:1.6;
-font-family:sans-serif;
+font-family:'Montserrat',sans-serif;
+font-weight:300;
 margin-bottom:16px;
 }
 .upload-area{
 border:2px dashed var(--gold-light);
 border-radius:16px;
-padding:40px 20px;
+padding:36px 20px;
 text-align:center;
 cursor:pointer;
 transition:all 0.3s;
@@ -103,38 +193,58 @@ margin-bottom:20px;
 .upload-area:hover{
 border-color:var(--gold);
 background:rgba(139,157,106,0.08);
+transform:scale(1.01);
 }
-.upload-icon{font-size:3rem;display:block;margin-bottom:12px}
-.upload-title{font-size:1.1rem;color:var(--text);margin-bottom:6px}
-.upload-hint{font-size:0.8rem;color:var(--text-light);font-family:sans-serif;line-height:1.5}
+.upload-icon{font-size:2.5rem;display:block;margin-bottom:12px}
+.upload-title{
+font-size:1.1rem;
+color:var(--text);
+margin-bottom:6px;
+font-family:'Cormorant Garamond',serif;
+font-weight:400;
+}
+.upload-hint{
+font-size:0.75rem;
+color:var(--text-light);
+font-family:'Montserrat',sans-serif;
+font-weight:300;
+line-height:1.6;
+word-break:break-word;
+}
 .upload-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .btn-option{
 padding:14px 10px;
 border:1.5px solid var(--gold-light);
-border-radius:10px;
+border-radius:12px;
 background:var(--white);
 color:var(--text);
 cursor:pointer;
 transition:all 0.2s;
-font-family:sans-serif;
-font-size:0.9rem;
+font-family:'Montserrat',sans-serif;
+font-size:0.85rem;
+font-weight:400;
 display:flex;
 flex-direction:column;
 align-items:center;
 gap:6px;
 }
-.btn-option:hover{border-color:var(--gold);background:rgba(139,157,106,0.06)}
+.btn-option:hover{
+border-color:var(--gold);
+background:rgba(139,157,106,0.06);
+transform:translateY(-2px);
+}
 .btn-option .icon{font-size:1.6rem}
 .btn{
 width:100%;
 padding:16px;
 border:none;
-border-radius:10px;
-font-size:1rem;
+border-radius:12px;
+font-size:0.95rem;
 cursor:pointer;
 transition:all 0.25s;
-font-family:sans-serif;
-font-weight:600;
+font-family:'Montserrat',sans-serif;
+font-weight:500;
+letter-spacing:1px;
 }
 .btn-primary{
 background:linear-gradient(135deg,var(--gold-dark),var(--gold));
@@ -144,9 +254,16 @@ box-shadow:0 4px 20px rgba(139,157,106,0.4);
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,157,106,0.5)}
 .btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none}
 .preview-container{display:none;margin-bottom:20px}
-.preview-label{font-size:0.8rem;color:var(--text-light);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;font-family:sans-serif}
+.preview-label{
+font-size:0.72rem;
+color:var(--text-light);
+text-transform:uppercase;
+letter-spacing:2px;
+margin-bottom:10px;
+font-family:'Montserrat',sans-serif;
+}
 .preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.preview-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--cream)}
+.preview-item{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--cream)}
 .preview-item img,.preview-item video{width:100%;height:100%;object-fit:cover}
 .remove-btn{
 position:absolute;top:4px;right:4px;
@@ -161,31 +278,82 @@ position:absolute;inset:0;
 background:rgba(0,0,0,0.5);
 display:flex;flex-direction:column;
 align-items:center;justify-content:center;
-color:white;font-size:0.75rem;font-family:sans-serif;
+color:white;font-size:0.75rem;
+font-family:'Montserrat',sans-serif;
 }
 .success-state{display:none;text-align:center;padding:20px 0}
-.success-icon{font-size:4rem;display:block;margin-bottom:16px;animation:pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
+.success-icon{
+font-size:4rem;
+display:block;
+margin-bottom:16px;
+animation:pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+}
 @keyframes pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
-.success-title{font-size:1.5rem;color:var(--text);margin-bottom:8px}
-.success-subtitle{color:var(--text-light);font-family:sans-serif;font-size:0.9rem;line-height:1.6;margin-bottom:24px}
+.success-title{
+font-size:1.8rem;
+color:var(--text);
+margin-bottom:8px;
+font-family:'Cormorant Garamond',serif;
+font-weight:400;
+}
+.success-subtitle{
+color:var(--text-light);
+font-family:'Montserrat',sans-serif;
+font-size:0.85rem;
+font-weight:300;
+line-height:1.8;
+margin-bottom:24px;
+}
 .btn-more{
 background:transparent;
 border:1.5px solid var(--gold);
 color:var(--gold-dark);
-padding:12px 24px;
-border-radius:10px;
+padding:12px 28px;
+border-radius:12px;
 cursor:pointer;
-font-family:sans-serif;
-font-size:0.9rem;
+font-family:'Montserrat',sans-serif;
+font-size:0.85rem;
+font-weight:400;
 transition:all 0.2s;
+letter-spacing:1px;
 }
 .btn-more:hover{background:rgba(139,157,106,0.1)}
+
+/* ===== ПІДПИС ===== */
+.footer-sign{
+text-align:center;
+margin-top:24px;
+padding-top:16px;
+border-top:1px solid rgba(139,157,106,0.15);
+color:var(--text-light);
+font-family:'Cormorant Garamond',serif;
+font-size:0.95rem;
+font-style:italic;
+}
+
+/* ===== КОНФЕТІ ===== */
+.confetti-piece{
+position:fixed;
+width:8px;
+height:8px;
+border-radius:2px;
+top:-10px;
+animation:confettiFall linear forwards;
+z-index:9999;
+pointer-events:none;
+}
+@keyframes confettiFall{
+0%{transform:translateY(0) rotate(0deg);opacity:1}
+100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
 .toast{
 position:fixed;bottom:30px;left:50%;
 transform:translateX(-50%) translateY(100px);
 background:var(--text);color:white;
 padding:12px 24px;border-radius:50px;
-font-family:sans-serif;font-size:0.9rem;
+font-family:'Montserrat',sans-serif;
+font-size:0.85rem;font-weight:400;
 transition:transform 0.3s;z-index:2000;
 white-space:nowrap;
 }
@@ -193,19 +361,20 @@ white-space:nowrap;
 .toast.success{background:var(--success)}
 .toast.error{background:var(--error)}
 .spinner{
-width:20px;height:20px;
+width:18px;height:18px;
 border:2px solid rgba(255,255,255,0.3);
 border-top-color:white;border-radius:50%;
 animation:spin 0.8s linear infinite;
 display:inline-block;margin-right:8px;vertical-align:middle;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+
 @media(max-width:480px){
 .card{padding:24px 16px}
-.names{font-size:1.5rem}
+.names{font-size:1.6rem}
 .upload-buttons{grid-template-columns:1fr 1fr}
-.upload-hint{font-size:0.72rem}
-.btn-option{padding:12px 6px;font-size:0.8rem}
+.upload-hint{font-size:0.68rem}
+.btn-option{padding:12px 6px;font-size:0.78rem}
 .btn-option .icon{font-size:1.3rem}
 .subtitle{font-size:0.85rem}
 .upload-title{font-size:1rem}
@@ -213,10 +382,15 @@ display:inline-block;margin-right:8px;vertical-align:middle;
 </style>
 </head>
 <body>
+
 <div class="card">
 
 <div class="header">
-<span class="emoji-ring">💍</span>
+<!-- Якщо є фото пари — замінити src на посилання -->
+<!-- <div class="couple-photo-wrap" onclick="openPhotoLightbox()">
+<img class="couple-photo" src="photo.jpg" alt="Anna & Maksym">
+</div> -->
+<span class="emoji-ring" onclick="openPhotoLightbox()">💍</span>
 <h1 class="names">Anna <span>&</span> Maksym</h1>
 <p class="date">01 · 08 · 2026</p>
 </div>
@@ -265,7 +439,16 @@ display:inline-block;margin-right:8px;vertical-align:middle;
 <button class="btn-more" onclick="resetUploader()" id="txt-more"></button>
 </div>
 
+<div class="footer-sign" id="footer-sign">З любов'ю, Anna & Maksym ❤️</div>
+
 </div>
+
+<!-- Lightbox для фото пари -->
+<div class="photo-lightbox" id="photo-lightbox" onclick="closePhotoLightbox()">
+<button class="lightbox-close" onclick="closePhotoLightbox()">✕</button>
+<img src="photo.jpg" alt="Anna & Maksym">
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -280,12 +463,13 @@ selected:'Вибрані файли',
 upload:'Завантажити фото 💛',
 uploading:'Завантаження...',
 thanks:'Дякуємо за фото!',
-thanksSub:'Ваші спогади назавжди залишаться у нашому серці ❤️',
+thanksSub:'Ваші спогади назавжди залишаться\nу нашому серці ❤️',
 more:'+ Додати ще фото',
 errorType:'Тільки фото та відео',
 errorSize:'Файл більше 200 МБ',
 errorUpload:'Помилка завантаження. Спробуйте ще раз.',
-success:'Фото успішно завантажено! 🎉'
+success:'Фото успішно завантажено! 🎉',
+footer:'З любов\'ю, Anna & Maksym ❤️'
 },
 en:{
 subtitle:'Share moments of our special day 📸',
@@ -302,7 +486,8 @@ more:'+ Add more photos',
 errorType:'Only photos and videos allowed',
 errorSize:'File is larger than 200 MB',
 errorUpload:'Upload failed. Please try again.',
-success:'Photos uploaded successfully! 🎉'
+success:'Photos uploaded successfully! 🎉',
+footer:'With love, Anna & Maksym ❤️'
 },
 cs:{
 subtitle:'Sdílejte momenty našeho svatebního dne 📸',
@@ -319,7 +504,8 @@ more:'+ Přidat další fotografie',
 errorType:'Pouze fotografie a videa',
 errorSize:'Soubor je větší než 200 MB',
 errorUpload:'Chyba nahrávání. Zkuste to znovu.',
-success:'Fotografie úspěšně nahrány! 🎉'
+success:'Fotografie úspěšně nahrány! 🎉',
+footer:'S láskou, Anna & Maksym ❤️'
 },
 ru:{
 subtitle:'Поделитесь моментами нашего праздника 📸',
@@ -336,7 +522,8 @@ more:'+ Добавить ещё фото',
 errorType:'Только фото и видео',
 errorSize:'Файл больше 200 МБ',
 errorUpload:'Ошибка загрузки. Попробуйте ещё раз.',
-success:'Фото успешно загружены! 🎉'
+success:'Фото успешно загружены! 🎉',
+footer:'С любовью, Anna & Maksym ❤️'
 }
 };
 
@@ -344,6 +531,7 @@ const CLOUD_NAME='dndou5vpl';
 const UPLOAD_PRESET='wedding-photos';
 const MAX_SIZE=200*1024*1024;
 const MAX_FILES=20;
+const COUPLE_PHOTO='photo.jpg'; // замінити на посилання на фото
 
 let currentLang='uk';
 let selectedFiles=[];
@@ -366,6 +554,7 @@ document.getElementById('txt-upload').textContent=t.upload;
 document.getElementById('txt-thanks').textContent=t.thanks;
 document.getElementById('txt-thanks-sub').textContent=t.thanksSub;
 document.getElementById('txt-more').textContent=t.more;
+document.getElementById('footer-sign').textContent=t.footer;
 }
 
 function setLang(lang){
@@ -382,7 +571,6 @@ btn.classList.add('active');
 function hideLang(){
 document.getElementById('lang-switcher').style.display='none';
 }
-
 function showLang(){
 document.getElementById('lang-switcher').style.display='flex';
 }
@@ -396,11 +584,18 @@ btn.classList.add('active');
 }
 });
 
+// ===== LIGHTBOX ФОТО ПАРИ =====
+function openPhotoLightbox(){
+document.getElementById('photo-lightbox').classList.add('open');
+}
+function closePhotoLightbox(){
+document.getElementById('photo-lightbox').classList.remove('open');
+}
+
 function openCamera(){
 hideLang();
 document.getElementById('camera-input').click();
 }
-
 function openGallery(){
 hideLang();
 document.getElementById('file-input').click();
@@ -511,10 +706,31 @@ overlay.innerHTML=`<span>${pct}%</span>`;
 }
 }
 
+// ===== КОНФЕТІ =====
+function launchConfetti(){
+const colors=['#8B9D6A','#C8D5B9','#C9A84C','#E8D5A3','#4A6741','#ffffff'];
+for(let i=0;i<80;i++){
+setTimeout(()=>{
+const piece=document.createElement('div');
+piece.className='confetti-piece';
+piece.style.left=Math.random()*100+'vw';
+piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+piece.style.width=(Math.random()*8+4)+'px';
+piece.style.height=(Math.random()*8+4)+'px';
+piece.style.borderRadius=Math.random()>0.5?'50%':'2px';
+piece.style.animationDuration=(Math.random()*2+2)+'s';
+piece.style.animationDelay=Math.random()*0.5+'s';
+document.body.appendChild(piece);
+setTimeout(()=>piece.remove(),4000);
+},i*30);
+}
+}
+
 function showSuccess(){
 document.getElementById('uploader').style.display='none';
 document.getElementById('success-state').style.display='block';
 showLang();
+launchConfetti();
 showToast(translations[currentLang].success,'success');
 }
 
