@@ -219,9 +219,9 @@ display:inline-block;margin-right:8px;vertical-align:middle;
 <div class="ornament">✦ ✦ ✦</div>
 
 <!-- Перемикач мови -->
-<div class="lang-switcher">
+<div class="lang-switcher" id="lang-switcher">
 <button class="lang-btn active" onclick="setLang('uk')">🇺🇦 UA</button>
-<button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+<button class="lang-btn" onclick="setLang('en')">🇬���� EN</button>
 <button class="lang-btn" onclick="setLang('cs')">🇨🇿 CS</button>
 <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
 </div>
@@ -295,7 +295,7 @@ success:'Фото успішно завантажено! 🎉'
 en:{
 subtitle:'Share moments of our special day 📸',
 drop:'Tap or drag photos here',
-hint:'JPG, PNG, HEIC, MP4 · Max 50 MB',
+hint:'JPG, PNG, HEIC, MP4 · Max 200 MB',
 camera:'Take a photo',
 gallery:'From gallery',
 selected:'Selected files',
@@ -312,7 +312,7 @@ success:'Photos uploaded successfully! 🎉'
 cs:{
 subtitle:'Sdílejte momenty našeho svatebního dne 📸',
 drop:'Klepněte nebo přetáhněte fotografie',
-hint:'JPG, PNG, HEIC, MP4 · Max 50 MB',
+hint:'JPG, PNG, HEIC, MP4 · Max 200 MB',
 camera:'Vyfotit',
 gallery:'Z galerie',
 selected:'Vybrané soubory',
@@ -339,7 +339,7 @@ thanks:'Спасибо за фото!',
 thanksSub:'Ваши воспоминания навсегда останутся в нашем сердце ❤️',
 more:'+ Добавить ещё фото',
 errorType:'Только фото и видео',
-errorSize:'Файл больше 50 МБ',
+errorSize:'Файл больше 200 МБ',
 errorUpload:'Ошибка загрузки. Попробуйте ещё раз.',
 success:'Фото успешно загружены! 🎉'
 }
@@ -348,7 +348,7 @@ success:'Фото успешно загружены! 🎉'
 // ===== CLOUDINARY НАЛАШТУВАННЯ =====
 const CLOUD_NAME    = 'dndou5vpl';
 const UPLOAD_PRESET = 'wedding-photos';
-const MAX_SIZE      = 50 * 1024 * 1024;
+const MAX_SIZE      = 200 * 1024 * 1024;
 const MAX_FILES     = 10;
 
 let currentLang = 'uk';
@@ -364,6 +364,7 @@ return 'en';
 
 function setLang(lang){
 currentLang = lang;
+document.getElementById('lang-switcher').style.display='none';
 const t = translations[lang];
 document.getElementById('txt-subtitle').textContent  = t.subtitle;
 document.getElementById('txt-drop').textContent      = t.drop;
