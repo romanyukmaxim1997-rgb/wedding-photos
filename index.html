@@ -278,7 +278,7 @@ const translations = {
 uk:{
 subtitle:'Поділіться моментами нашого свята 📸',
 drop:'Натисніть або перетягніть фото',
-hint:'JPG, PNG, HEIC, MP4 · Максимум 50 МБ',
+hint:'JPG, PNG, HEIC, MP4 · Макс 200 МБ · до 20 фото',
 camera:'Зробити фото',
 gallery:'З галереї',
 selected:'Вибрані файли',
@@ -288,15 +288,14 @@ thanks:'Дякуємо за фото!',
 thanksSub:'Ваші спогади назавжди залишаться у нашому серці ❤️',
 more:'+ Додати ще фото',
 errorType:'Тільки фото та відео',
-errorSize:'Файл більше 50 МБ',
+errorSize:'Файл більше 200 МБ',
 errorUpload:'Помилка завантаження. Спробуйте ще раз.',
 success:'Фото успішно завантажено! 🎉'
 },
 en:{
 subtitle:'Share moments of our special day 📸',
 drop:'Tap or drag photos here',
-hint:'JPG, PNG, HEIC, MP4 · Max 200 MB',
-camera:'Take a photo',
+hint:'JPG, PNG, HEIC, MP4 · Max 200 MB · up to 20 photos',camera:'Take a photo',
 gallery:'From gallery',
 selected:'Selected files',
 upload:'Upload photos 💛',
@@ -305,14 +304,14 @@ thanks:'Thank you for the photos!',
 thanksSub:'Your memories will stay in our hearts forever ❤️',
 more:'+ Add more photos',
 errorType:'Only photos and videos allowed',
-errorSize:'File is larger than 50 MB',
+errorSize:'File is larger than 200 MB',
 errorUpload:'Upload failed. Please try again.',
 success:'Photos uploaded successfully! 🎉'
 },
 cs:{
 subtitle:'Sdílejte momenty našeho svatebního dne 📸',
 drop:'Klepněte nebo přetáhněte fotografie',
-hint:'JPG, PNG, HEIC, MP4 · Max 200 MB',
+hint:'JPG, PNG, HEIC, MP4 · Max 200 MB · až 20 fotografií',
 camera:'Vyfotit',
 gallery:'Z galerie',
 selected:'Vybrané soubory',
@@ -322,14 +321,14 @@ thanks:'Děkujeme za fotografie!',
 thanksSub:'Vaše vzpomínky zůstanou navždy v našich srdcích ❤️',
 more:'+ Přidat další fotografie',
 errorType:'Pouze fotografie a videa',
-errorSize:'Soubor je větší než 50 MB',
+errorSize:'Soubor je větší než 200 MB',
 errorUpload:'Chyba nahrávání. Zkuste to znovu.',
 success:'Fotografie úspěšně nahrány! 🎉'
 },
 ru:{
 subtitle:'Поделитесь моментами нашего праздника 📸',
 drop:'Нажмите или перетащите фото',
-hint:'JPG, PNG, HEIC, MP4 · Максимум 50 МБ',
+hint:'JPG, PNG, HEIC, MP4 · Макс 200 МБ · до 20 фото',
 camera:'Сделать фото',
 gallery:'Из галереи',
 selected:'Выбранные файлы',
@@ -349,13 +348,18 @@ success:'Фото успешно загружены! 🎉'
 const CLOUD_NAME    = 'dndou5vpl';
 const UPLOAD_PRESET = 'wedding-photos';
 const MAX_SIZE      = 200 * 1024 * 1024;
-const MAX_FILES     = 10;
+const MAX_FILES     = 20;
 
 let currentLang = 'uk';
 let selectedFiles = [];
 
 // Авто-визначення мови
-function detectLang(){
+currentLang = detectLang();
+const t = translations[currentLang];
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.classList.remove('active');
+  if(btn.textContent.includes(currentLang.toUpperCase())) btn.classList.add('active');
+});
 const lang = navigator.language || navigator.userLanguage || 'en';
 const code = lang.substring(0,2).toLowerCase();
 if(translations[code]) return code;
