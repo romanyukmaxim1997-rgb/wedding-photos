@@ -55,19 +55,74 @@ bottom:0;left:0;right:0;
 height:2px;
 background:linear-gradient(90deg,#C9A84C,#E8D5A3,#8B9D6A,#4A6741);
 }
-.header{text-align:center;margin-bottom:8px}
+
+/* ===== ФОТО ПАРИ ===== */
+.couple-photo-wrap{
+display:flex;
+justify-content:center;
+margin-bottom:16px;
+cursor:pointer;
+}
+.couple-photo{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid var(--gold-light);
+box-shadow:0 4px 20px rgba(139,157,106,0.3);
+transition:transform 0.3s;
+animation:float 1.5s ease-in-out infinite;
+}
+.couple-photo:hover{transform:scale(1.05)}
 .emoji-ring{
 font-size:3rem;
 display:block;
 margin-bottom:12px;
 animation:float 1.5s ease-in-out infinite;
 cursor:pointer;
-user-select:none;
 }
 @keyframes float{
 0%,100%{transform:translateY(0)}
 50%{transform:translateY(-16px)}
 }
+
+/* ===== LIGHTBOX ===== */
+.photo-lightbox{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.85);
+z-index:3000;
+align-items:center;
+justify-content:center;
+padding:20px;
+animation:fadeIn 0.3s ease;
+}
+.photo-lightbox.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.photo-lightbox img{
+max-width:90%;
+max-height:85vh;
+border-radius:16px;
+object-fit:contain;
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.lightbox-close{
+position:absolute;
+top:20px;right:20px;
+color:white;
+font-size:2rem;
+cursor:pointer;
+background:rgba(255,255,255,0.1);
+border:none;
+width:44px;height:44px;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+transition:background 0.2s;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.2)}
+
+.header{text-align:center;margin-bottom:8px}
 .names{
 font-size:2rem;
 color:var(--text);
@@ -263,6 +318,8 @@ transition:all 0.2s;
 letter-spacing:1px;
 }
 .btn-more:hover{background:rgba(139,157,106,0.1)}
+
+/* ===== ПІДПИС ===== */
 .footer-sign{
 text-align:center;
 margin-top:24px;
@@ -273,9 +330,12 @@ font-family:'Cormorant Garamond',serif;
 font-size:0.95rem;
 font-style:italic;
 }
+
+/* ===== КОНФЕТІ ===== */
 .confetti-piece{
 position:fixed;
-width:8px;height:8px;
+width:8px;
+height:8px;
 border-radius:2px;
 top:-10px;
 animation:confettiFall linear forwards;
@@ -286,56 +346,6 @@ pointer-events:none;
 0%{transform:translateY(0) rotate(0deg);opacity:1}
 100%{transform:translateY(100vh) rotate(720deg);opacity:0}
 }
-
-/* ===== DOGGO LIGHTBOX ===== */
-.doggo-lightbox{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.85);
-z-index:3000;
-align-items:center;
-justify-content:center;
-padding:20px;
-animation:fadeIn 0.3s ease;
-}
-.doggo-lightbox.open{display:flex}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.doggo-inner{
-text-align:center;
-padding:40px;
-}
-.doggo-emoji{
-font-size:8rem;
-display:block;
-animation:float 1.5s ease-in-out infinite;
-}
-.doggo-kiss{
-font-size:3rem;
-display:block;
-margin-top:-20px;
-}
-.doggo-text{
-color:white;
-font-family:'Cormorant Garamond',serif;
-font-size:1.5rem;
-margin-top:16px;
-font-style:italic;
-}
-.lightbox-close{
-position:absolute;
-top:20px;right:20px;
-color:white;
-font-size:2rem;
-cursor:pointer;
-background:rgba(255,255,255,0.1);
-border:none;
-width:44px;height:44px;
-border-radius:50%;
-display:flex;align-items:center;justify-content:center;
-transition:background 0.2s;
-}
-.lightbox-close:hover{background:rgba(255,255,255,0.2)}
 
 .toast{
 position:fixed;bottom:30px;left:50%;
@@ -358,6 +368,7 @@ animation:spin 0.8s linear infinite;
 display:inline-block;margin-right:8px;vertical-align:middle;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+
 @media(max-width:480px){
 .card{padding:24px 16px}
 .names{font-size:1.6rem}
@@ -373,8 +384,13 @@ display:inline-block;margin-right:8px;vertical-align:middle;
 <body>
 
 <div class="card">
+
 <div class="header">
-<span class="emoji-ring" onclick="openDoggo()">💍</span>
+<!-- Якщо є фото пари — замінити src на посилання -->
+<!-- <div class="couple-photo-wrap" onclick="openPhotoLightbox()">
+<img class="couple-photo" src="photo.jpg" alt="Anna & Maksym">
+</div> -->
+<span class="emoji-ring">💍</span>
 <h1 class="names">Anna <span>&</span> Maksym</h1>
 <p class="date">01 · 08 · 2026</p>
 </div>
@@ -423,17 +439,14 @@ display:inline-block;margin-right:8px;vertical-align:middle;
 <button class="btn-more" onclick="resetUploader()" id="txt-more"></button>
 </div>
 
-<div class="footer-sign" id="footer-sign"></div>
+<div class="footer-sign" id="footer-sign">З любов'ю, Anna & Maksym ❤️</div>
+
 </div>
 
-<!-- Doggo Lightbox -->
-<div class="doggo-lightbox" id="doggo-lightbox" onclick="closeDoggo()">
-<button class="lightbox-close" onclick="closeDoggo()">✕</button>
-<div class="doggo-inner">
-<span class="doggo-emoji">🐕</span>
-<span class="doggo-kiss">💋</span>
-<p class="doggo-text" id="doggo-text">з любов'ю до вас!</p>
-</div>
+<!-- Lightbox для фото пари -->
+<div class="photo-lightbox" id="photo-lightbox" onclick="closePhotoLightbox()">
+<button class="lightbox-close" onclick="closePhotoLightbox()">✕</button>
+<img src="photo.jpg" alt="Anna & Maksym">
 </div>
 
 <div class="toast" id="toast"></div>
@@ -450,14 +463,13 @@ selected:'Вибрані файли',
 upload:'Завантажити фото 💛',
 uploading:'Завантаження...',
 thanks:'Дякуємо за фото!',
-thanksSub:'Ваші спогади назавжди залишаться у нашому серці ❤️',
+thanksSub:'Ваші спогади назавжди залишаться\nу нашому серці ❤️',
 more:'+ Додати ще фото',
 errorType:'Тільки фото та відео',
 errorSize:'Файл більше 200 МБ',
 errorUpload:'Помилка завантаження. Спробуйте ще раз.',
 success:'Фото успішно завантажено! 🎉',
-footer:'З любов\'ю, Anna & Maksym ❤️',
-doggo:'з любов\'ю до вас!'
+footer:'З любов\'ю, Anna & Maksym ❤️'
 },
 en:{
 subtitle:'Share moments of our special day 📸',
@@ -475,8 +487,7 @@ errorType:'Only photos and videos allowed',
 errorSize:'File is larger than 200 MB',
 errorUpload:'Upload failed. Please try again.',
 success:'Photos uploaded successfully! 🎉',
-footer:'With love, Anna & Maksym ❤️',
-doggo:'with love to you!'
+footer:'With love, Anna & Maksym ❤️'
 },
 cs:{
 subtitle:'Sdílejte momenty našeho svatebního dne 📸',
@@ -494,8 +505,7 @@ errorType:'Pouze fotografie a videa',
 errorSize:'Soubor je větší než 200 MB',
 errorUpload:'Chyba nahrávání. Zkuste to znovu.',
 success:'Fotografie úspěšně nahrány! 🎉',
-footer:'S láskou, Anna & Maksym ❤️',
-doggo:'s láskou k vám!'
+footer:'S láskou, Anna & Maksym ❤️'
 },
 ru:{
 subtitle:'Поделитесь моментами нашего праздника 📸',
@@ -513,8 +523,7 @@ errorType:'Только фото и видео',
 errorSize:'Файл больше 200 МБ',
 errorUpload:'Ошибка загрузки. Попробуйте ещё раз.',
 success:'Фото успешно загружены! 🎉',
-footer:'С любовью, Anna & Maksym ❤️',
-doggo:'с любовью к вам!'
+footer:'С любовью, Anna & Maksym ❤️'
 }
 };
 
@@ -522,6 +531,7 @@ const CLOUD_NAME='dndou5vpl';
 const UPLOAD_PRESET='wedding-photos';
 const MAX_SIZE=200*1024*1024;
 const MAX_FILES=20;
+const COUPLE_PHOTO='photo.jpg'; // замінити на посилання на фото
 
 let currentLang='uk';
 let selectedFiles=[];
@@ -545,7 +555,6 @@ document.getElementById('txt-thanks').textContent=t.thanks;
 document.getElementById('txt-thanks-sub').textContent=t.thanksSub;
 document.getElementById('txt-more').textContent=t.more;
 document.getElementById('footer-sign').textContent=t.footer;
-document.getElementById('doggo-text').textContent=t.doggo;
 }
 
 function setLang(lang){
@@ -566,6 +575,7 @@ function showLang(){
 document.getElementById('lang-switcher').style.display='flex';
 }
 
+// Ініціалізація
 currentLang=detectLang();
 applyLang(currentLang);
 document.querySelectorAll('.lang-btn').forEach(btn=>{
@@ -574,11 +584,12 @@ btn.classList.add('active');
 }
 });
 
-function openDoggo(){
-document.getElementById('doggo-lightbox').classList.add('open');
+// ===== LIGHTBOX ФОТО ПАРИ =====
+function openPhotoLightbox(){
+document.getElementById('photo-lightbox').classList.add('open');
 }
-function closeDoggo(){
-document.getElementById('doggo-lightbox').classList.remove('open');
+function closePhotoLightbox(){
+document.getElementById('photo-lightbox').classList.remove('open');
 }
 
 function openCamera(){
@@ -695,6 +706,7 @@ overlay.innerHTML=`<span>${pct}%</span>`;
 }
 }
 
+// ===== КОНФЕТІ =====
 function launchConfetti(){
 const colors=['#8B9D6A','#C8D5B9','#C9A84C','#E8D5A3','#4A6741','#ffffff'];
 for(let i=0;i<80;i++){
